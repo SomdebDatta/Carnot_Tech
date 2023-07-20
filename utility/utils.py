@@ -12,7 +12,12 @@ def get_latest_values(raw_data: pd.DataFrame):
     grouped_sorted_data = sorted_data.groupby("device_fk_id")
     LOGGER.info("Sorted data has been grouped by 'device_fk_id'")
 
+    latest_df = pd.DataFrame()
     for entry in list(grouped_sorted_data):
         latest_time = entry[1]["time_stamp"].max()
         LOGGER.info(f"Latest time for {entry[0]} is {latest_time}")
-        LOGGER.info(f"Entire row:\n{entry[1].tail(1)}")
+        latest_row = entry[1].tail(1)
+        LOGGER.info(f"Entire row:\n{latest_row}")
+        latest_df = pd.concat([latest_df, latest_row], axis=0)
+
+    return latest_df.reset_index()
