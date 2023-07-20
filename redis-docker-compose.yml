@@ -19,6 +19,8 @@ services:
   main_app:
     image: main_app
     container_name: main_app
+    ports:
+      - 8000:8000
     volumes:
       - main_app_data:/main_db
 volumes:
