@@ -13,11 +13,29 @@ def get_latest_values(raw_data: pd.DataFrame):
     LOGGER.info("Sorted data has been grouped by 'device_fk_id'")
 
     latest_df = pd.DataFrame()
+    start_end_df = pd.DataFrame()
     for entry in list(grouped_sorted_data):
+        oldest_time = entry[1]["time_stamp"].min()
+        LOGGER.info(f"Oldest time for {entry[0]} is {oldest_time}")
+
+        oldest_row = entry[1].head(1)
+        LOGGER.info(f"Oldest row for {entry[0]} is {oldest_row}")
+
         latest_time = entry[1]["time_stamp"].max()
         LOGGER.info(f"Latest time for {entry[0]} is {latest_time}")
-        latest_row = entry[1].tail(1)
-        LOGGER.info(f"Entire row:\n{latest_row}")
-        latest_df = pd.concat([latest_df, latest_row], axis=0)
 
-    return latest_df.reset_index()
+        latest_row = entry[1].tail(1)
+        LOGGER.info(f"Latest row for {entry[0]} is {latest_row}")
+
+        start_end_df = pd.concat([start_end_df, oldest_row], axis=0)
+        start_end_df = pd.concat([start_end_df, latest_row], axis=0)
+        LOGGER.info(
+            f"After updating Start-End DataFrame with device {entry[0]} values - \n {start_end_df}"
+        )
+
+        latest_df = pd.concat([latest_df, latest_row], axis=0)
+        LOGGER.info(
+            f"After updating Latest DataFrame with device {entry[0]} values - \n {latest_df}"
+        )
+
+    return (latest_df.reset_index(), start_end_df.reset_index(), grouped_sorted_data)
