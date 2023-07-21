@@ -45,11 +45,14 @@ def store_latest_data():
     # Getting and storing the latest values as per the timestamp of each device id
     (latest_values, start_end_values, grouped_data) = get_latest_values(raw_data)
 
+    LOGGER.info("Caching all relevant data in redis.")
     r.set("latest_values", zlib.compress(pickle.dumps(latest_values)))
 
     r.set("start_end_values", zlib.compress(pickle.dumps(start_end_values)))
 
     r.set("grouped_data", zlib.compress(pickle.dumps(grouped_data)))
+
+    LOGGER.info("Caching complete. Try out the APIs.")
 
 
 @app.get("/latest_device_info")

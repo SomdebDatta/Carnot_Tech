@@ -29,16 +29,16 @@ def get_latest_values(
     start_end_df = pd.DataFrame()
     for entry in list(grouped_sorted_data):
         oldest_time = entry[1]["time_stamp"].min()
-        LOGGER.info(f"Oldest time for {entry[0]} is {oldest_time}")
+        # LOGGER.info(f"Oldest time for {entry[0]} is {oldest_time}")
 
         oldest_row = entry[1].head(1)
-        LOGGER.info(f"Oldest row for {entry[0]} is {oldest_row}")
+        # LOGGER.info(f"Oldest row for {entry[0]} is {oldest_row}")
 
         latest_time = entry[1]["time_stamp"].max()
-        LOGGER.info(f"Latest time for {entry[0]} is {latest_time}")
+        # LOGGER.info(f"Latest time for {entry[0]} is {latest_time}")
 
         latest_row = entry[1].tail(1)
-        LOGGER.info(f"Latest row for {entry[0]} is {latest_row}")
+        # LOGGER.info(f"Latest row for {entry[0]} is {latest_row}")
 
         start_end_df = pd.concat([start_end_df, oldest_row], axis=0)
         start_end_df = pd.concat([start_end_df, latest_row], axis=0)
