@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "c01c09a0-10ca-4a56-ac50-ad828229f359",
+		"name": "XYZ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Latest device info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/latest_device_info?device_fk_id=6888",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"latest_device_info"
+					],
+					"query": [
+						{
+							"key": "device_fk_id",
+							"value": "6888"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start and End Location",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/start_end_loc?device_fk_id=6888",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"start_end_loc"
+					],
+					"query": [
+						{
+							"key": "device_fk_id",
+							"value": "6888"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Location",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/get_all_geometries?device_fk_id=6888&start_time=2021-10-23T13:13:14Z&end_time=2021-10-23T13:13:28Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"get_all_geometries"
+					],
+					"query": [
+						{
+							"key": "device_fk_id",
+							"value": "6888"
+						},
+						{
+							"key": "start_time",
+							"value": "2021-10-23T13:13:14Z"
+						},
+						{
+							"key": "end_time",
+							"value": "2021-10-23T13:13:28Z"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
