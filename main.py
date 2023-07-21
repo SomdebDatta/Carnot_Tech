@@ -39,6 +39,7 @@ def store_latest_data():
     # Read raw data
     raw_data = pd.read_csv(os.path.join(ROOT_DIR, Constants.RAW_DATA_PATH.value))
 
+    # Store raw data in cache
     r.set("raw_data", zlib.compress(pickle.dumps(raw_data)))
 
     # Getting and storing the latest values as per the timestamp of each device id
@@ -50,9 +51,6 @@ def store_latest_data():
     r.set("start_end_values", zlib.compress(pickle.dumps(start_end_values)))
 
     r.set("grouped_data", zlib.compress(pickle.dumps(grouped_data)))
-
-    # fetch_latest = pickle.loads(zlib.decompress(r.get("latest_values")))
-    # LOGGER.info(f"Latest values fetched from cache successfully - {fetch_latest}")
 
 
 @app.get("/latest_device_info")
@@ -68,29 +66,49 @@ def get_latest_device_info(device_fk_id: int) -> dict:
     Returns:
     :returns `response`: A JSON response specifying all the latest details of the device.
     """
-    latest_values = pickle.loads(zlib.decompress(r.get("latest_values")))
-    LOGGER.info(f"Latest values fetched - \n{latest_values.head()}")
+    try:
+        latest_values = pickle.loads(zlib.decompress(r.get("latest_values")))
+        LOGGER.info(f"Latest values fetched - \n{latest_values.head()}")
 
-    valid_row = (
-        latest_values.loc[latest_values["device_fk_id"] == device_fk_id]
-        .drop(["level_0", "index"], axis=1)
-        .reset_index()
-    )
-    LOGGER.info(f"Valid row -> {valid_row}")
+        valid_row = (
+            latest_values.loc[latest_values["device_fk_id"] == device_fk_id]
+            .drop(["level_0", "index"], axis=1)
+            .reset_index()
+        )
+        LOGGER.info(f"Valid row -> {valid_row}")
 
-    response = {
-        "device_fk_id": str(valid_row.device_fk_id[0]),
-        "latitude": str(valid_row.latitude[0]),
-        "longitude": str(valid_row.longitude[0]),
-        "time_stamp": str(valid_row.time_stamp[0]),
-        "sts": str(valid_row.sts[0]),
-        "speed": str(valid_row.speed[0]),
-    }
-    return JSONResponse(content=response, status_code=200)
+        response = {
+            "device_fk_id": str(valid_row.device_fk_id[0]),
+            "latitude": str(valid_row.latitude[0]),
+            "longitude": str(valid_row.longitude[0]),
+            "time_stamp": str(valid_row.time_stamp[0]),
+            "sts": str(valid_row.sts[0]),
+            "speed": str(valid_row.speed[0]),
+        }
+        return JSONResponse(content=response, status_code=200)
+
+    except KeyError:
+        LOGGER.error(f"This device id - {device_fk_id} does not exist!")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect device id.",
+        )
 
 
 @app.get("/start_end_loc")
 def get_start_end_loc(device_fk_id: int) -> dict:
+    """
+    This is the second API.
+    Description as per document:
+    An API that takes device ID and returns start location & end location for that device.
+    Location should be (lat, lon) tuple.
+
+    Args:
+    :param `device_fk_id`: An integer specifying the device id.
+
+    Returns:
+    :returns `response`: A JSON response containing the relevant details as per the description above.
+    """
     start_end_df = pickle.loads(zlib.decompress(r.get("start_end_values")))
     LOGGER.info(f"Start-End values fetched - \n{start_end_df.head()}")
 
@@ -121,6 +139,20 @@ def get_start_end_loc(device_fk_id: int) -> dict:
 
 @app.get("/get_all_geometries")
 def get_all_geometries(device_fk_id: int, start_time: str, end_time: str) -> dict:
+    """
+    This is the third API.
+    Description as per document:
+    An API that takes in device ID, start time & end time and returns all the location
+    points as list of latitude, longitude & time stamp.
+
+    Args:
+    :param `device_fk_id`: An integer specifying the device id.
+    :param `start_time`: A string specifying the start time.
+    :param `end_time`: A string specifying the end time.
+
+    Returns:
+    :returns `response`: A JSON response containing the relevant details as per the description above.
+    """
     data_list = []
     start_time_obj = parser.parse(start_time)
     end_time_obj = parser.parse(end_time)

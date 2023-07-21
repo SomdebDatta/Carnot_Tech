@@ -5,7 +5,20 @@ from utility.logger import get_logger
 LOGGER = get_logger("Utils Module.")
 
 
-def get_latest_values(raw_data: pd.DataFrame):
+def get_latest_values(
+    raw_data: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    This is a helper function.
+    On the startup of this service, this does the necessary calculations and
+    stores in cache so as to save time when the APIs are called.
+
+    Args:
+    :param `raw_data`: A pandas DataFrame having the raw input data.
+
+    Returns:
+    :returns `response`: A tuple of 3 DataFrames containing relevant data required by
+    the APIs."""
     sorted_data = raw_data.sort_values("time_stamp").reset_index()
     LOGGER.info("Raw data has been sorted as per 'time_stamp' column.")
 
