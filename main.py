@@ -207,7 +207,3 @@ def get_all_geometries(device_fk_id: int, start_time: str, end_time: str) -> dic
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect device id.",
         )
-
-
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", port=8000, log_level="info", reload=True)
