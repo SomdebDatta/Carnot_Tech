@@ -1,7 +1,7 @@
 # Carnot-Technologies  Assignment
 
 Hey!
-This is my attempt at the assignment given.
+This is my attempt at the assignment given. I have attached the Postman Collection and other relevant files in the config folder.
 
 # How to Setup Developer instance
 1. Clone this repository-
@@ -37,7 +37,7 @@ This is my attempt at the assignment given.
 
 # FastAPI
 
-Since I've used FastAPI to create the endpoints, it automatically creates the documentation (just liek Swagger) of all the APIS. Just visit the link give in step 7.
+Since I've used FastAPI to create the endpoints, it automatically creates the documentation (just like Swagger) of all the APIS. Just visit the link give in step 7.
 You can try out the APIs there itself!
 
 # API Sample Responses
@@ -142,3 +142,9 @@ You can try out the APIs there itself!
                 }
             ]
         }
+
+
+
+### Author:
+Name: Somdeb Datta
+Email: somdebdatta@gmail.com
