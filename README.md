@@ -37,7 +37,7 @@ This is my attempt at the assignment given. I have attached the Postman Collecti
 
 # FastAPI
 
-Since I've used FastAPI to create the endpoints, it automatically creates the documentation (just like Swagger) of all the APIS. Just visit the link give in step 7.
+Since I've used FastAPI to create the endpoints, it automatically creates the documentation (just like Swagger) of all the APIS. Just visit the link given in step 7.
 You can try out the APIs there itself!
 
 # API Sample Responses
