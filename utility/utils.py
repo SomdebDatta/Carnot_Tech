@@ -42,13 +42,7 @@ def get_latest_values(
 
         start_end_df = pd.concat([start_end_df, oldest_row], axis=0)
         start_end_df = pd.concat([start_end_df, latest_row], axis=0)
-        LOGGER.info(
-            f"After updating Start-End DataFrame with device {entry[0]} values - \n {start_end_df}"
-        )
 
         latest_df = pd.concat([latest_df, latest_row], axis=0)
-        LOGGER.info(
-            f"After updating Latest DataFrame with device {entry[0]} values - \n {latest_df}"
-        )
 
     return (latest_df.reset_index(), start_end_df.reset_index(), grouped_sorted_data)

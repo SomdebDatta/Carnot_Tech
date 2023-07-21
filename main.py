@@ -44,7 +44,6 @@ def store_latest_data():
 
     # Getting and storing the latest values as per the timestamp of each device id
     (latest_values, start_end_values, grouped_data) = get_latest_values(raw_data)
-    LOGGER.info(f"Latest Values DF :\n{latest_values}")
 
     r.set("latest_values", zlib.compress(pickle.dumps(latest_values)))
 
@@ -68,7 +67,7 @@ def get_latest_device_info(device_fk_id: int) -> dict:
     """
     try:
         latest_values = pickle.loads(zlib.decompress(r.get("latest_values")))
-        LOGGER.info(f"Latest values fetched - \n{latest_values.head()}")
+        LOGGER.info("Latest values fetched.")
 
         valid_row = (
             latest_values.loc[latest_values["device_fk_id"] == device_fk_id]
@@ -110,7 +109,7 @@ def get_start_end_loc(device_fk_id: int) -> dict:
     :returns `response`: A JSON response containing the relevant details as per the description above.
     """
     start_end_df = pickle.loads(zlib.decompress(r.get("start_end_values")))
-    LOGGER.info(f"Start-End values fetched - \n{start_end_df.head()}")
+    LOGGER.info("Start-End values fetched.")
 
     try:
         valid_rows = (
@@ -159,7 +158,7 @@ def get_all_geometries(device_fk_id: int, start_time: str, end_time: str) -> dic
 
     if start_time_obj < end_time_obj:
         grouped_data = pickle.loads(zlib.decompress(r.get("grouped_data")))
-        LOGGER.info(f"Grouped data fetched.")
+        LOGGER.info("Grouped data fetched.")
 
         for entry in grouped_data:
             if entry[0] == device_fk_id:
